@@ -1,6 +1,8 @@
 import cv2
 from datetime import datetime
 import pandas
+from bokeh.plotting import figure
+from bokeh.io import output_file, show
 
 video = cv2.VideoCapture(0, cv2.CAP_DSHOW)  # start capturing video
 first_frame = None
@@ -39,13 +41,12 @@ while True:
         cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
 
     statuses.append(status)
+    statuses = statuses[-2:]
+
     if (statuses[-1] == 1 and statuses[-2] == 0) or\
             (statuses[-1] == 0 and statuses[-2] == 1):
         times.append(datetime.now())
 
-    # cv2.imshow("Delta Frame", delta_frame)
-    # cv2.imshow("Grayed Frame", grayed_frame)
-    # cv2.imshow("Threshold Frame", threshold_frame)
     cv2.imshow("Capture", frame)
 
     key = cv2.waitKey(1)
